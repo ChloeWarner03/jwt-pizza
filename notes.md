@@ -9,7 +9,8 @@ As part of `Deliverable ⓵ Development deployment: JWT Pizza`, start up the app
 | View home page                                      |    home.jsx        |         none      |      none    |
 | Register new user<br/>(t@jwt.com, pw: test)         |    register.jsx    | [POST] /api/auth |`INSERT INTO user (name, email, password) VALUES (?, ?, ?)` <br/>`INSERT INTO userRole (userId, role, objectId) VALUES (?, ?, ?)`              |
 | Login new user<br/>(t@jwt.com, pw: test)            |      login.tsx      |    [PUT] /api/auth    | SELECT * FROM user WHERE email = ? AND password = ?<br/>INSERT INTO auth (userId, token) VALUES (?, ?) |
-| Order pizza                                         |  menu.tsx, payment.tsx      |                   |              |
+| Order pizza                                         |  menu.tsx, payment.tsx      |   [POST] /api/order  |INSERT INTO order (userId, pizzaId, status, total) VALUES (?, ?, ?, ?);
+INSERT INTO orderItem (orderId, pizzaId, quantity) VALUES (?, ?, ?); |
 | Verify pizza                                        | delivery.tsx  |                   |              |
 | View profile page                                   |  dinerDashboard.tsx    |                   |              |
 | View franchise<br/>(as diner)                       |  franchiseDashboard.tsx|                   |              |
