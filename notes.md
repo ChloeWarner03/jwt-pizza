@@ -11,8 +11,8 @@ As part of `Deliverable ⓵ Development deployment: JWT Pizza`, start up the app
 | Login new user<br/>(t@jwt.com, pw: test)            |      login.tsx      |    [PUT] /api/auth    |SELECT * FROM user WHERE email=?INSERT INTO auth (token, userId) VALUES (?, ?) ON DUPLICATE KEY UPDATE token=token' |
 | Order pizza                                         |  menu.tsx, payment.tsx | [GET] /api/order/menu <br>[POST] /api/order      |   SELECT * FROM menuINSERT INTO dinerOrder (dinerId, franchiseId, storeId, date) VALUES (?, ?, ?, now())SELECT id FROM menu WHERE id=?<br>INSERT INTO orderItem (orderId, menuId, description, price) VALUES (?, ?, ?, ?) |
 | Verify pizza                                        | delivery.tsx  | [POST] factory/api/order   |   none           |
-| View profile page                                   |  dinerDashboard.tsx    |    [GET] /api/order?page=1     | SELECT id, franchiseId, storeId, date FROM dinerOrder WHERE dinerId=? <br>LIMIT offset,limitSELECT id, menuId, description, price FROM orderItem WHERE orderId=?   |
-| View franchise<br/>(as diner)                       |  franchiseDashboard.tsx|                   |              |
+| View profile page                                   |  dinerDashboard.tsx    |    [GET] /api/order?page=1     | SELECT id, franchiseId, storeId, date FROM dinerOrder WHERE dinerId=? <br> LIMIT offset,limitSELECT id, menuId, description, price FROM orderItem WHERE orderId=?  |
+| View franchise<br/>(as diner)                       |  franchiseDashboard.tsx| [GET] /api/franchise?page=0&limit=10&name=* |SELECT id, name FROM franchise WHERE name LIKE ? <br>LIMIT limit+1 OFFSET offsetSELECT id, name FROM store WHERE franchiseId=? |
 | Logout                                              |   logout.tsx       |                   |              |
 | View About page                                     |   about.tsx      |                   |              |
 | View History page                                   |  history.tsx     |                   |              |
