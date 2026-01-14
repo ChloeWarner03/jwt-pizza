@@ -9,15 +9,15 @@ As part of `Deliverable ⓵ Development deployment: JWT Pizza`, start up the app
 | View home page                                      |    home.tsx        |         none      |      none    |
 | Register new user<br/>(t@jwt.com, pw: test)         |    register.tsx    | [POST] /api/auth |INSERT INTO user (name, email, password) VALUES (?, ?, ?)` <br/>`INSERT INTO userRole (userId, role, objectId) VALUES (?, ?, ?)             |
 | Login new user<br/>(t@jwt.com, pw: test)            |      login.tsx      |    [PUT] /api/auth    |SELECT * FROM user WHERE email=?INSERT INTO auth (token, userId) VALUES (?, ?) ON DUPLICATE KEY UPDATE token=token' |
-| Order pizza                                         |  menu.tsx, payment.tsx | [GET] /api/order/menu <br>[POST] /api/order      |   SELECT * FROM menuINSERT INTO dinerOrder (dinerId, franchiseId, storeId, date) VALUES (?, ?, ?, now())SELECT id FROM menu WHERE id=?<br>INSERT INTO orderItem (orderId, menuId, description, price) VALUES (?, ?, ?, ?) |
+| Order pizza                                         |  menu.tsx, payment.tsx | [GET] /api/order/menu <br>[POST] /api/order      |   SELECT * FROM menuINSERT INTO dinerOrder (dinerId, franchiseId, storeId, date) VALUES (?, ?, ?, now())<br>SELECT id FROM menu WHERE id=?<br>INSERT INTO orderItem (orderId, menuId, description, price) VALUES (?, ?, ?, ?) |
 | Verify pizza                                        | delivery.tsx  | [POST] factory/api/order   |   none           |
 | View profile page                                   |  dinerDashboard.tsx    |    [GET] /api/order?page=1     | SELECT id, franchiseId, storeId, date FROM dinerOrder WHERE dinerId=? <br> LIMIT offset,limitSELECT id, menuId, description, price FROM orderItem WHERE orderId=?  |
 | View franchise<br/>(as diner)                       |  franchiseDashboard.tsx| [GET] /api/franchise?page=0&limit=10&name=* |SELECT id, name FROM franchise WHERE name LIKE ? <br>LIMIT limit+1 OFFSET offsetSELECT id, name FROM store WHERE franchiseId=? |
 | Logout                                              |   logout.tsx       | [DELETE] /api/auth  | DELETE FROM auth WHERE token=?  |
 | View About page                                     |   about.tsx      |        none         |      none      |
 | View History page                                   |  history.tsx     |        none           |      none       |
-| Login as franchisee<br/>(f@jwt.com, pw: franchisee) |  login.tsx     |                   |              |
-| View franchise<br/>(as franchisee)                  |franchiseDashboard.tsx|                   |              |
+| Login as franchisee<br/>(f@jwt.com, pw: franchisee) |  login.tsx     | [PUT] /api/auth   |SELECT * FROM user WHERE email=?SELECT * FROM userRole WHERE userId=?INSERT INTO auth (token, userId) <br>VALUES (?, ?) ON DUPLICATE KEY UPDATE token=token  |
+| View franchise<br/>(as franchisee)                  |franchiseDashboard.tsx| [GET] /api/franchise/:userId   | SELECT objectId FROM userRole WHERE role='franchisee' AND userId=?SELECT id, name FROM franchise WHERE id in (...)<br>SELECT u.id, u.name, u.email <br>FROM userRole AS ur JOIN user AS u ON u.id=ur.userId<br> WHERE ur.objectId=? AND ur.role='franchisee'SELECT s.id, s.name, <br>COALESCE(SUM(oi.price), 0) AS totalRevenue FROM dinerOrder AS do JOIN orderItem AS oi ON do.id=oi.orderId RIGHT JOIN store AS s ON s.id=do.storeId WHERE s.franchiseId=? GROUP BY s.id |
 | Create a store                                      | createStore.tsx |                   |              |
 | Close a store                                       |  closeStore.tsx |                   |              |
 | Login as admin<br/>(a@jwt.com, pw: admin)           |  login.tsx    |                   |              |
