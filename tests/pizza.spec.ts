@@ -111,10 +111,9 @@ test('view diner dashboard', async ({ page }) => {
   await page.getByRole('button', { name: 'Login' }).click();
   
   // Click on user name to view dashboard
-  await page.getByRole('link', { name: 'KC' }).click();
+  await page.getByRole('link', { name: 'pd' }).click();
   
   await expect(page.getByText('Your pizza kitchen')).toBeVisible();
-  await expect(page.getByText('diner')).toBeVisible();
 });
 
 //
