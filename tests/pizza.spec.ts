@@ -38,6 +38,33 @@ test('register new user and order pizza', async ({ page }) => {
   await expect(page.getByRole('link', { name: 'Login' })).toBeVisible();
 });
 
+// Franchisee tests
+test('login as franchisee', async ({ page }) => {
+  await page.goto('https://pizza.cs329.click/');
+  
+  await page.getByRole('link', { name: 'Login' }).click();
+  await page.getByRole('textbox', { name: 'Email address' }).fill('f@jwt.com');
+  await page.getByRole('textbox', { name: 'Password' }).fill('franchisee');
+  await page.getByRole('button', { name: 'Login' }).click();
+  
+  await expect(page.getByRole('link', { name: 'PF' })).toBeVisible();
+});
+
+test('view franchisee dashboard', async ({ page }) => {
+  await page.goto('https://pizza.cs329.click/');
+  
+  // Login as franchisee
+  await page.getByRole('link', { name: 'Login' }).click();
+  await page.getByRole('textbox', { name: 'Email address' }).fill('f@jwt.com');
+  await page.getByRole('textbox', { name: 'Password' }).fill('franchisee');
+  await page.getByRole('button', { name: 'Login' }).click();
+  
+  // Navigate to franchise
+  await page.getByLabel('Global').getByRole('link', { name: 'Franchise' }).click();
+  
+  await expect(page.getByText('pizza franchisee')).toBeVisible();
+});
+
 //
 
 
