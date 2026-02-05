@@ -65,6 +65,60 @@ test('view franchisee dashboard', async ({ page }) => {
   await expect(page.getByText('pizza franchisee')).toBeVisible();
 });
 
+// Admin tests
+test('login as admin', async ({ page }) => {
+  await page.goto('https://pizza.cs329.click/');
+  
+  await page.getByRole('link', { name: 'Login' }).click();
+  await page.getByRole('textbox', { name: 'Email address' }).fill('a@jwt.com');
+  await page.getByRole('textbox', { name: 'Password' }).fill('admin');
+  await page.getByRole('button', { name: 'Login' }).click();
+});
+
+test('view admin dashboard', async ({ page }) => {
+  await page.goto('https://pizza.cs329.click/');
+  
+  // Login as admin
+  await page.getByRole('link', { name: 'Login' }).click();
+  await page.getByRole('textbox', { name: 'Email address' }).fill('a@jwt.com');
+  await page.getByRole('textbox', { name: 'Password' }).fill('admin');
+  await page.getByRole('button', { name: 'Login' }).click();
+  
+  // Navigate to admin page
+  await page.getByRole('link', { name: 'Admin' }).click();
+  
+  await expect(page.getByText('Mama Ricci\'s kitchen')).toBeVisible();
+});
+
+// Error handling tests
+test('failed login shows error', async ({ page }) => {
+  await page.goto('https://pizza.cs329.click/');
+  
+  await page.getByRole('link', { name: 'Login' }).click();
+  await page.getByRole('textbox', { name: 'Email address' }).fill('invalid@test.com');
+  await page.getByRole('textbox', { name: 'Password' }).fill('wrongpassword');
+  await page.getByRole('button', { name: 'Login' }).click();
+  
+  // Should stay on login page or show error
+  await expect(page.getByRole('heading', { name: 'Welcome back' })).toBeVisible();
+});
+
+test('view diner dashboard', async ({ page }) => {
+  await page.goto('https://pizza.cs329.click/');
+  
+  // Login
+  await page.getByRole('link', { name: 'Login' }).click();
+  await page.getByRole('textbox', { name: 'Email address' }).fill('d@jwt.com');
+  await page.getByRole('textbox', { name: 'Password' }).fill('diner');
+  await page.getByRole('button', { name: 'Login' }).click();
+  
+  // Click on user name to view dashboard
+  await page.getByRole('link', { name: 'KC' }).click();
+  
+  await expect(page.getByText('Your pizza kitchen')).toBeVisible();
+  await expect(page.getByText('diner')).toBeVisible();
+});
+
 //
 
 
