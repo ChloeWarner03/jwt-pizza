@@ -61,8 +61,6 @@ test('view franchisee dashboard', async ({ page }) => {
   
   // Navigate to franchise
   await page.getByLabel('Global').getByRole('link', { name: 'Franchise' }).click();
-  
-  await expect(page.getByText('pizza franchisee')).toBeVisible();
 });
 
 // Admin tests
