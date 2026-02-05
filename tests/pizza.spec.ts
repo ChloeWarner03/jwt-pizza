@@ -6,12 +6,12 @@ import { test, expect } from 'playwright-test-coverage';
 
 //Homepage test
 test('home page', async ({ page }) => {
-  await page.goto('https://pizza.cs329.click/');  
+  await page.goto('http://localhost:5173/');
   
 });
 
 test('register new user and order pizza', async ({ page }) => {
-  await page.goto('https://pizza.cs329.click/');
+  await page.goto('http://localhost:5173/');
   
   // Navigate to register
   await page.getByRole('link', { name: 'Login' }).click();
@@ -28,7 +28,7 @@ test('register new user and order pizza', async ({ page }) => {
   
   // Order pizza
   await page.getByRole('button', { name: 'Order now' }).click();
-  await page.getByRole('combobox').selectOption('20');
+  await page.getByRole('combobox').selectOption({ label: 'SLC' });
   await page.getByRole('link', { name: 'Image Description Veggie A' }).click();
   await page.getByRole('button', { name: 'Checkout' }).click();
   await page.getByRole('button', { name: 'Pay now' }).click();
@@ -40,7 +40,7 @@ test('register new user and order pizza', async ({ page }) => {
 
 // Franchisee tests
 test('login as franchisee', async ({ page }) => {
-  await page.goto('https://pizza.cs329.click/');
+  await page.goto('http://localhost:5173/');
   
   await page.getByRole('link', { name: 'Login' }).click();
   await page.getByRole('textbox', { name: 'Email address' }).fill('f@jwt.com');
@@ -51,7 +51,7 @@ test('login as franchisee', async ({ page }) => {
 });
 
 test('view franchisee dashboard', async ({ page }) => {
-  await page.goto('https://pizza.cs329.click/');
+  await page.goto('http://localhost:5173/');
   
   // Login as franchisee
   await page.getByRole('link', { name: 'Login' }).click();
@@ -67,7 +67,7 @@ test('view franchisee dashboard', async ({ page }) => {
 
 // Admin tests
 test('login as admin', async ({ page }) => {
-  await page.goto('https://pizza.cs329.click/');
+  await page.goto('http://localhost:5173/');
   
   await page.getByRole('link', { name: 'Login' }).click();
   await page.getByRole('textbox', { name: 'Email address' }).fill('a@jwt.com');
@@ -76,7 +76,7 @@ test('login as admin', async ({ page }) => {
 });
 
 test('view admin dashboard', async ({ page }) => {
-  await page.goto('https://pizza.cs329.click/');
+  await page.goto('http://localhost:5173/');
   
   // Login as admin
   await page.getByRole('link', { name: 'Login' }).click();
@@ -92,7 +92,7 @@ test('view admin dashboard', async ({ page }) => {
 
 // Error handling tests
 test('failed login shows error', async ({ page }) => {
-  await page.goto('https://pizza.cs329.click/');
+  await page.goto('http://localhost:5173/');
   
   await page.getByRole('link', { name: 'Login' }).click();
   await page.getByRole('textbox', { name: 'Email address' }).fill('invalid@test.com');
@@ -104,7 +104,7 @@ test('failed login shows error', async ({ page }) => {
 });
 
 test('view diner dashboard', async ({ page }) => {
-  await page.goto('https://pizza.cs329.click/');
+  await page.goto('http://localhost:5173/');
   
   // Login
   await page.getByRole('link', { name: 'Login' }).click();
