@@ -21,8 +21,8 @@ test('register new user and order pizza', async ({ page }) => {
   
   // Register new user
   await page.getByRole('textbox', { name: 'Full name' }).fill('Devin');
-  await page.getByRole('textbox', { name: 'Email address' }).fill('devin@gmail.com');
-  await page.getByRole('textbox', { name: 'Password' }).fill('password');
+  await page.getByRole('textbox', { name: 'Email address' }).fill('t@jwt.com');
+  await page.getByRole('textbox', { name: 'Password' }).fill('test');
   await page.getByRole('button', { name: 'Register' }).click();
   
   // Verify registration success
@@ -129,12 +129,12 @@ test('view diner dashboard', async ({ page }) => {
   
   // Login
   await page.getByRole('link', { name: 'Login' }).click();
-  await page.getByRole('textbox', { name: 'Email address' }).fill('d@jwt.com');
-  await page.getByRole('textbox', { name: 'Password' }).fill('diner');
+  await page.getByRole('textbox', { name: 'Email address' }).fill('t@jwt.com');
+  await page.getByRole('textbox', { name: 'Password' }).fill('test');
   await page.getByRole('button', { name: 'Login' }).click();
   
   // Click on user name to view dashboard
-  await page.getByRole('link', { name: 'pd' }).click();
+  await page.getByRole('link', { name: 'D' }).click();
   
   await expect(page.getByText('Your pizza kitchen')).toBeVisible();
 });
