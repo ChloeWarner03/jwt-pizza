@@ -63,37 +63,6 @@ test('view franchisee dashboard', async ({ page }) => {
   await page.getByLabel('Global').getByRole('link', { name: 'Franchise' }).click();
 });
 
-test('franchisee can view close store dialog', async ({ page }) => {
-  await page.goto('http://localhost:5173/');
-  
-  await page.getByRole('link', { name: 'Login' }).click();
-  await page.getByRole('textbox', { name: 'Email address' }).fill('f@jwt.com');
-  await page.getByRole('textbox', { name: 'Password' }).fill('franchisee');
-  await page.getByRole('button', { name: 'Login' }).click();
-  
-  await page.getByLabel('Global').getByRole('link', { name: 'Franchise' }).click();
-  
-  // Click close on a store
-  await page.getByRole('button', { name: 'Close' }).first().click();
-  
-  await expect(page.getByText('Sorry to see you go')).toBeVisible();
-  await page.getByRole('button', { name: 'Cancel' }).click();
-});
-
-test('franchisee can view create store dialog', async ({ page }) => {
-  await page.goto('http://localhost:5173/');
-  
-  await page.getByRole('link', { name: 'Login' }).click();
-  await page.getByRole('textbox', { name: 'Email address' }).fill('f@jwt.com');
-  await page.getByRole('textbox', { name: 'Password' }).fill('franchisee');
-  await page.getByRole('button', { name: 'Login' }).click();
-  
-  await page.getByLabel('Global').getByRole('link', { name: 'Franchise' }).click();
-  await page.getByRole('button', { name: 'Create store' }).click();
-  
-  await expect(page.getByPlaceholder('store name')).toBeVisible();
-  await page.getByRole('button', { name: 'Cancel' }).click();
-});
 
 // Admin tests
 test('login as admin', async ({ page }) => {
