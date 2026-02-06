@@ -1,7 +1,9 @@
 //When I want to do it with my own account 
 //For each test do this
 //await page.goto('http://localhost:5173/');  // ← Changed to localhost
-//tests
+//tests hello
+
+
 import { test, expect } from 'playwright-test-coverage';
 
 //Homepage test
