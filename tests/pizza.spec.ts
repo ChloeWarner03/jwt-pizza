@@ -63,6 +63,38 @@ test('view franchisee dashboard', async ({ page }) => {
   await page.getByLabel('Global').getByRole('link', { name: 'Franchise' }).click();
 });
 
+test('franchisee can view close store dialog', async ({ page }) => {
+  await page.goto('http://localhost:5173/');
+  
+  await page.getByRole('link', { name: 'Login' }).click();
+  await page.getByRole('textbox', { name: 'Email address' }).fill('f@jwt.com');
+  await page.getByRole('textbox', { name: 'Password' }).fill('franchisee');
+  await page.getByRole('button', { name: 'Login' }).click();
+  
+  await page.getByLabel('Global').getByRole('link', { name: 'Franchise' }).click();
+  
+  // Click close on a store
+  await page.getByRole('button', { name: 'Close' }).first().click();
+  
+  await expect(page.getByText('Sorry to see you go')).toBeVisible();
+  await page.getByRole('button', { name: 'Cancel' }).click();
+});
+
+test('franchisee can view create store dialog', async ({ page }) => {
+  await page.goto('http://localhost:5173/');
+  
+  await page.getByRole('link', { name: 'Login' }).click();
+  await page.getByRole('textbox', { name: 'Email address' }).fill('f@jwt.com');
+  await page.getByRole('textbox', { name: 'Password' }).fill('franchisee');
+  await page.getByRole('button', { name: 'Login' }).click();
+  
+  await page.getByLabel('Global').getByRole('link', { name: 'Franchise' }).click();
+  await page.getByRole('button', { name: 'Create store' }).click();
+  
+  await expect(page.getByPlaceholder('store name')).toBeVisible();
+  await page.getByRole('button', { name: 'Cancel' }).click();
+});
+
 // Admin tests
 test('login as admin', async ({ page }) => {
   await page.goto('http://localhost:5173/');
@@ -88,18 +120,38 @@ test('view admin dashboard', async ({ page }) => {
   await expect(page.getByText('Mama Ricci\'s kitchen')).toBeVisible();
 });
 
-// Error handling tests
-test('failed login shows error', async ({ page }) => {
+test('admin can view create franchise dialog', async ({ page }) => {
   await page.goto('http://localhost:5173/');
   
   await page.getByRole('link', { name: 'Login' }).click();
-  await page.getByRole('textbox', { name: 'Email address' }).fill('invalid@test.com');
-  await page.getByRole('textbox', { name: 'Password' }).fill('wrongpassword');
+  await page.getByRole('textbox', { name: 'Email address' }).fill('a@jwt.com');
+  await page.getByRole('textbox', { name: 'Password' }).fill('admin');
   await page.getByRole('button', { name: 'Login' }).click();
   
-  // Should stay on login page or show error
-  await expect(page.getByRole('heading', { name: 'Welcome back' })).toBeVisible();
+  await page.getByRole('link', { name: 'Admin' }).click();
+  await page.getByRole('button', { name: 'Add Franchise' }).click();
+  
+  await expect(page.getByPlaceholder('franchise name')).toBeVisible();
+  await page.getByRole('button', { name: 'Cancel' }).click();
 });
+
+test('admin can view close franchise dialog', async ({ page }) => {
+  await page.goto('http://localhost:5173/');
+  
+  await page.getByRole('link', { name: 'Login' }).click();
+  await page.getByRole('textbox', { name: 'Email address' }).fill('a@jwt.com');
+  await page.getByRole('textbox', { name: 'Password' }).fill('admin');
+  await page.getByRole('button', { name: 'Login' }).click();
+  
+  await page.getByRole('link', { name: 'Admin' }).click();
+  
+  // Click close button on first franchise
+  await page.getByRole('button', { name: 'close' }).first().click();
+  
+  await expect(page.getByText('Sorry to see you go')).toBeVisible();
+  await page.getByRole('button', { name: 'Cancel' }).click();
+});
+
 
 test('view diner dashboard', async ({ page }) => {
   await page.goto('http://localhost:5173/');
@@ -116,6 +168,49 @@ test('view diner dashboard', async ({ page }) => {
   await expect(page.getByText('Your pizza kitchen')).toBeVisible();
 });
 
+//view pages
+
+test('view about page', async ({ page }) => {
+  await page.goto('http://localhost:5173/');
+  await page.getByRole('link', { name: 'About' }).click();
+  await expect(page.getByText('The secret sauce')).toBeVisible();
+});
+
+test('view history page', async ({ page }) => {
+  await page.goto('http://localhost:5173/');
+  await page.getByRole('link', { name: 'History' }).click();
+  await expect(page.getByText('Mama Rucci')).toBeVisible();
+});
+
+test('view docs page', async ({ page }) => {
+  await page.goto('http://localhost:5173/');
+  await page.getByRole('contentinfo').getByRole('link', { name: 'About' }).click();
+  await page.getByText('The secret sauce').click();
+  await page.getByText('At JWT Pizza, our amazing').click();
+  await page.getByText('Our talented employees at JWT').click();
+  await page.getByRole('heading', { name: 'Our employees' }).click();
+  await page.getByRole('link', { name: 'home' }).click();
+
+})
+
+test('view 404 page', async ({ page }) => {
+  await page.goto('http://localhost:5173/non-existent-page');
+  await expect(page.getByText('Oops')).toBeVisible();
+});
+
+
+// Error handling tests
+test('failed login shows error', async ({ page }) => {
+  await page.goto('http://localhost:5173/');
+  
+  await page.getByRole('link', { name: 'Login' }).click();
+  await page.getByRole('textbox', { name: 'Email address' }).fill('invalid@test.com');
+  await page.getByRole('textbox', { name: 'Password' }).fill('wrongpassword');
+  await page.getByRole('button', { name: 'Login' }).click();
+  
+  // Should stay on login page or show error
+  await expect(page.getByRole('heading', { name: 'Welcome back' })).toBeVisible();
+});
 //
 
 
