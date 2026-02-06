@@ -8,12 +8,12 @@ import { test, expect } from 'playwright-test-coverage';
 
 //Homepage test
 test('home page', async ({ page }) => {
-  await page.goto('http://localhost:5173/');
+  await page.goto('http://localhost:3000/');
   
 });
 
 test('register new user and order pizza', async ({ page }) => {
-  await page.goto('http://localhost:5173/');
+  await page.goto('http://localhost:3000/');
   
   // Navigate to register
   await page.getByRole('link', { name: 'Login' }).click();
@@ -42,7 +42,7 @@ test('register new user and order pizza', async ({ page }) => {
 
 // Franchisee tests
 test('login as franchisee', async ({ page }) => {
-  await page.goto('http://localhost:5173/');
+  await page.goto('http://localhost:3000/');
   
   await page.getByRole('link', { name: 'Login' }).click();
   await page.getByRole('textbox', { name: 'Email address' }).fill('f@jwt.com');
@@ -53,7 +53,7 @@ test('login as franchisee', async ({ page }) => {
 });
 
 test('view franchisee dashboard', async ({ page }) => {
-  await page.goto('http://localhost:5173/');
+  await page.goto('http://localhost:3000/');
   
   // Login as franchisee
   await page.getByRole('link', { name: 'Login' }).click();
@@ -68,7 +68,7 @@ test('view franchisee dashboard', async ({ page }) => {
 
 // Admin tests
 test('login as admin', async ({ page }) => {
-  await page.goto('http://localhost:5173/');
+  await page.goto('http://localhost:3000/');
   
   await page.getByRole('link', { name: 'Login' }).click();
   await page.getByRole('textbox', { name: 'Email address' }).fill('a@jwt.com');
@@ -77,7 +77,7 @@ test('login as admin', async ({ page }) => {
 });
 
 test('view admin dashboard', async ({ page }) => {
-  await page.goto('http://localhost:5173/');
+  await page.goto('http://localhost:3000/');
   
   // Login as admin
   await page.getByRole('link', { name: 'Login' }).click();
@@ -92,7 +92,7 @@ test('view admin dashboard', async ({ page }) => {
 });
 
 test('admin can view create franchise dialog', async ({ page }) => {
-  await page.goto('http://localhost:5173/');
+  await page.goto('http://localhost:3000/');
   
   await page.getByRole('link', { name: 'Login' }).click();
   await page.getByRole('textbox', { name: 'Email address' }).fill('a@jwt.com');
@@ -107,7 +107,7 @@ test('admin can view create franchise dialog', async ({ page }) => {
 });
 
 test('admin can view close franchise dialog', async ({ page }) => {
-  await page.goto('http://localhost:5173/');
+  await page.goto('http://localhost:3000/');
   
   await page.getByRole('link', { name: 'Login' }).click();
   await page.getByRole('textbox', { name: 'Email address' }).fill('a@jwt.com');
@@ -125,7 +125,7 @@ test('admin can view close franchise dialog', async ({ page }) => {
 
 
 test('view diner dashboard', async ({ page }) => {
-  await page.goto('http://localhost:5173/');
+  await page.goto('http://localhost:3000/');
   
   // Login
   await page.getByRole('link', { name: 'Login' }).click();
@@ -142,19 +142,19 @@ test('view diner dashboard', async ({ page }) => {
 //view pages
 
 test('view about page', async ({ page }) => {
-  await page.goto('http://localhost:5173/');
+  await page.goto('http://localhost:3000/');
   await page.getByRole('link', { name: 'About' }).click();
   await expect(page.getByText('The secret sauce')).toBeVisible();
 });
 
 test('view history page', async ({ page }) => {
-  await page.goto('http://localhost:5173/');
+  await page.goto('http://localhost:3000/');
   await page.getByRole('link', { name: 'History' }).click();
   await expect(page.getByText('Mama Rucci')).toBeVisible();
 });
 
 test('view docs page', async ({ page }) => {
-  await page.goto('http://localhost:5173/');
+  await page.goto('http://localhost:3000/');
   await page.getByRole('contentinfo').getByRole('link', { name: 'About' }).click();
   await page.getByText('The secret sauce').click();
   await page.getByText('At JWT Pizza, our amazing').click();
@@ -165,14 +165,14 @@ test('view docs page', async ({ page }) => {
 })
 
 test('view 404 page', async ({ page }) => {
-  await page.goto('http://localhost:5173/non-existent-page');
+  await page.goto('http://localhost:3000/non-existent-page');
   await expect(page.getByText('Oops')).toBeVisible();
 });
 
 
 // Error handling tests
 test('failed login shows error', async ({ page }) => {
-  await page.goto('http://localhost:5173/');
+  await page.goto('http://localhost:3000/');
   
   await page.getByRole('link', { name: 'Login' }).click();
   await page.getByRole('textbox', { name: 'Email address' }).fill('invalid@test.com');
