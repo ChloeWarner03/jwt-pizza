@@ -183,6 +183,8 @@ test('failed login shows error', async ({ page }) => {
 //
 
 
+//NEED TO WRITE MORE TESTs
+
 /*
   await page.getByText('JWT Pizza', { exact: true }).click();
   await page.getByText('The web\'s best pizza', { exact: true }).click();
