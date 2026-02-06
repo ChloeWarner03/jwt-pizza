@@ -1,6 +1,6 @@
 //When I want to do it with my own account 
 //For each test do this
-//await page.goto('http://localhost:5173/');  // ← Changed to localhost
+//await page.goto('/');  // ← Changed to use baseURL
 //tests hello
 
 
@@ -8,12 +8,12 @@ import { test, expect } from 'playwright-test-coverage';
 
 //Homepage test
 test('home page', async ({ page }) => {
-  await page.goto('http://localhost:5173/');
+  await page.goto('/');
   
 });
 
 test('register new user and order pizza', async ({ page }) => {
-  await page.goto('http://localhost:5173/');
+  await page.goto('/');
   
   // Navigate to register
   await page.getByRole('link', { name: 'Login' }).click();
@@ -42,7 +42,7 @@ test('register new user and order pizza', async ({ page }) => {
 
 // Franchisee tests
 test('login as franchisee', async ({ page }) => {
-  await page.goto('http://localhost:5173/');
+  await page.goto('/');
   
   await page.getByRole('link', { name: 'Login' }).click();
   await page.getByRole('textbox', { name: 'Email address' }).fill('f@jwt.com');
@@ -53,7 +53,7 @@ test('login as franchisee', async ({ page }) => {
 });
 
 test('view franchisee dashboard', async ({ page }) => {
-  await page.goto('http://localhost:5173/');
+  await page.goto('/');
   
   // Login as franchisee
   await page.getByRole('link', { name: 'Login' }).click();
@@ -68,7 +68,7 @@ test('view franchisee dashboard', async ({ page }) => {
 
 // Admin tests
 test('login as admin', async ({ page }) => {
-  await page.goto('http://localhost:5173/');
+  await page.goto('/');
   
   await page.getByRole('link', { name: 'Login' }).click();
   await page.getByRole('textbox', { name: 'Email address' }).fill('a@jwt.com');
@@ -77,7 +77,7 @@ test('login as admin', async ({ page }) => {
 });
 
 test('view admin dashboard', async ({ page }) => {
-  await page.goto('http://localhost:5173/');
+  await page.goto('/');
   
   // Login as admin
   await page.getByRole('link', { name: 'Login' }).click();
@@ -92,7 +92,7 @@ test('view admin dashboard', async ({ page }) => {
 });
 
 test('admin can view create franchise dialog', async ({ page }) => {
-  await page.goto('http://localhost:5173/');
+  await page.goto('/');
   
   await page.getByRole('link', { name: 'Login' }).click();
   await page.getByRole('textbox', { name: 'Email address' }).fill('a@jwt.com');
@@ -107,7 +107,7 @@ test('admin can view create franchise dialog', async ({ page }) => {
 });
 
 test('admin can view close franchise dialog', async ({ page }) => {
-  await page.goto('http://localhost:5173/');
+  await page.goto('/');
   
   await page.getByRole('link', { name: 'Login' }).click();
   await page.getByRole('textbox', { name: 'Email address' }).fill('a@jwt.com');
@@ -125,7 +125,7 @@ test('admin can view close franchise dialog', async ({ page }) => {
 
 
 test('view diner dashboard', async ({ page }) => {
-  await page.goto('http://localhost:5173/');
+  await page.goto('/');
   
   // Login
   await page.getByRole('link', { name: 'Login' }).click();
@@ -142,19 +142,19 @@ test('view diner dashboard', async ({ page }) => {
 //view pages
 
 test('view about page', async ({ page }) => {
-  await page.goto('http://localhost:5173/');
+  await page.goto('/');
   await page.getByRole('link', { name: 'About' }).click();
   await expect(page.getByText('The secret sauce')).toBeVisible();
 });
 
 test('view history page', async ({ page }) => {
-  await page.goto('http://localhost:5173/');
+  await page.goto('/');
   await page.getByRole('link', { name: 'History' }).click();
   await expect(page.getByText('Mama Rucci')).toBeVisible();
 });
 
 test('view docs page', async ({ page }) => {
-  await page.goto('http://localhost:5173/');
+  await page.goto('/');
   await page.getByRole('contentinfo').getByRole('link', { name: 'About' }).click();
   await page.getByText('The secret sauce').click();
   await page.getByText('At JWT Pizza, our amazing').click();
@@ -165,14 +165,14 @@ test('view docs page', async ({ page }) => {
 })
 
 test('view 404 page', async ({ page }) => {
-  await page.goto('http://localhost:5173/non-existent-page');
+  await page.goto('/non-existent-page');
   await expect(page.getByText('Oops')).toBeVisible();
 });
 
 
 // Error handling tests
 test('failed login shows error', async ({ page }) => {
-  await page.goto('http://localhost:5173/');
+  await page.goto('/');
   
   await page.getByRole('link', { name: 'Login' }).click();
   await page.getByRole('textbox', { name: 'Email address' }).fill('invalid@test.com');
@@ -182,47 +182,3 @@ test('failed login shows error', async ({ page }) => {
   // Should stay on login page or show error
   await expect(page.getByRole('heading', { name: 'Welcome back' })).toBeVisible();
 });
-//
-
-
-//NEED TO WRITE MORE TESTs
-
-/*
-  await page.getByText('JWT Pizza', { exact: true }).click();
-  await page.getByText('The web\'s best pizza', { exact: true }).click();
-  await page.getByRole('link', { name: 'Login' }).click();
-  await page.getByRole('link', { name: 'Register' }).click();
-  await page.getByRole('textbox', { name: 'Full name' }).fill('Devin');
-  await page.getByRole('textbox', { name: 'Email address' }).click();
-  await page.getByRole('textbox', { name: 'Email address' }).fill('devin@gmail.com');
-  await page.getByRole('textbox', { name: 'Password' }).click();
-  await page.getByRole('textbox', { name: 'Password' }).fill('password');
-  await page.getByRole('button', { name: 'Register' }).click();
-  await page.getByText('Pizza is an absolute delight').click();
-  await page.getByRole('button', { name: 'Order now' }).click();
-  await page.getByRole('combobox').selectOption('20');
-  await page.getByRole('link', { name: 'Image Description Veggie A' }).click();
-  await page.getByRole('button', { name: 'Checkout' }).click();
-  await page.getByRole('button', { name: 'Pay now' }).click();
-  await page.getByRole('link', { name: 'Logout' }).click();
-  
-  
-  await page.getByRole('textbox', { name: 'Email address' }).click();
-  await page.getByRole('textbox', { name: 'Email address' }).fill('f@jwt.com');
-  await page.getByRole('textbox', { name: 'Password' }).click();
-  await page.getByRole('textbox', { name: 'Password' }).fill('franchisee');
-  await page.getByRole('button', { name: 'Login' }).click();
-  await page.getByRole('button', { name: 'Cancel' }).click();
-  await page.getByLabel('Global').getByRole('link', { name: 'Franchise' }).click();
-  await page.getByRole('button', { name: 'Create store' }).click();
-  await page.getByRole('textbox', { name: 'store name' }).click();
-  await page.getByRole('textbox', { name: 'store name' }).fill('Hello');
-  await page.getByRole('button', { name: 'Create' }).click();
-  await page.getByRole('row', { name: 'Hello 0 ₿ Close' }).getByRole('button').click();
-  await page.getByRole('button', { name: 'Close' }).click();
-  await page.getByRole('link', { name: 'Order' }).click();
-  await page.getByLabel('Global').getByRole('link', { name: 'Franchise' }).click();
-  await page.getByRole('link', { name: 'Logout' }).click();
-  await page.getByLabel('Global').getByRole('link', { name: 'Franchise' }).click();
-
-}); */
