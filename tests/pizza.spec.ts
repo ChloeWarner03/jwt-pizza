@@ -14,28 +14,85 @@ async function setupMocks(page: Page) {
     })
   );
 
-/* FRANCHISE LIST */
-  await page.route('**/api/franchise', route =>
-    route.fulfill({
-     json: {
-       franchises: [
-         {
-           id: 1,
-           name: 'LotaPizza',
-           stores: [
-             { id: 1, name: 'Lehi' },
-             { id: 2, name: 'Springville' }
-           ]
-         },
-         {
-           id: 2,
+  /* FRANCHISE LIST - must come BEFORE franchise details route */
+  await page.route('**/api/franchise?*', route => {
+    return route.fulfill({
+      json: {
+        franchises: [
+          {
+            id: 1,
+            name: 'LotaPizza',
+            stores: [
+              { id: 1, name: 'Lehi' },
+              { id: 2, name: 'Springville' }
+            ]
+          },
+          {
+            id: 2,
             name: 'PizzaCorp',
             stores: [{ id: 3, name: 'Spanish Fork' }]
           }
-       ]
-     }
-    })
-  );
+        ]
+      }
+    });
+  });
+
+  await page.route('**/api/franchise', route => {
+    return route.fulfill({
+      json: {
+        franchises: [
+          {
+            id: 1,
+            name: 'LotaPizza',
+            stores: [
+              { id: 1, name: 'Lehi' },
+              { id: 2, name: 'Springville' }
+            ]
+          },
+          {
+            id: 2,
+            name: 'PizzaCorp',
+            stores: [{ id: 3, name: 'Spanish Fork' }]
+          }
+        ]
+      }
+    });
+  });
+
+  /* FRANCHISE DETAILS - more specific pattern */
+  await page.route('**/api/franchise/[0-9]*', route => {
+    const method = route.request().method();
+
+    if (method === 'GET') {
+      return route.fulfill({
+        json: {
+          id: 1,
+          name: 'LotaPizza',
+          admins: [{ id: 2, name: 'Pizza Franchisee', email: 'f@jwt.com' }],
+          stores: [
+            { id: 1, name: 'Lehi', totalRevenue: 0.05 },
+            { id: 2, name: 'Springville', totalRevenue: 0.03 }
+          ]
+        }
+      });
+    }
+
+    if (method === 'POST') {
+      const body = route.request().postDataJSON();
+      return route.fulfill({
+        json: {
+          id: 5,
+          name: body.name,
+          admins: [{ email: body.admins[0].email }],
+          stores: []
+        }
+      });
+    }
+
+    if (method === 'DELETE') {
+      return route.fulfill({ json: { message: 'franchise closed' } });
+    }
+  });
 
   /* AUTH - THIS IS THE KEY FIX */
   await page.route('**/api/auth', route => {
@@ -52,7 +109,7 @@ async function setupMocks(page: Page) {
       // Register
       const body = route.request().postDataJSON();
       return route.fulfill({
-        json: { 
+        json: {
           user: { id: 4, name: body.name, email: body.email, roles: [{ role: 'diner' }] },
           token: 'new-user-token'
         }
@@ -65,7 +122,7 @@ async function setupMocks(page: Page) {
 
       if (body.email === 'a@jwt.com') {
         return route.fulfill({
-          json: { 
+          json: {
             user: { id: 1, name: 'Admin', email: 'a@jwt.com', roles: [{ role: 'admin' }] },
             token: 'admin-token'
           }
@@ -74,7 +131,7 @@ async function setupMocks(page: Page) {
 
       if (body.email === 'f@jwt.com') {
         return route.fulfill({
-          json: { 
+          json: {
             user: { id: 2, name: 'Pizza Franchisee', email: 'f@jwt.com', roles: [{ role: 'franchisee' }] },
             token: 'franchisee-token'
           }
@@ -89,7 +146,7 @@ async function setupMocks(page: Page) {
       }
 
       return route.fulfill({
-        json: { 
+        json: {
           user: { id: 3, name: 'Kai Chen', email: body.email, roles: [{ role: 'diner' }] },
           token: 'diner-token'
         }
@@ -104,20 +161,20 @@ async function setupMocks(page: Page) {
   /* ORDER */
   await page.route('**/api/order', route => {
     const method = route.request().method();
-  
+
     if (method === 'POST') {
       const orderReq = route.request().postDataJSON();
       return route.fulfill({
-        json: { 
-          order: { 
-            ...orderReq, 
-            id: 1 
+        json: {
+          order: {
+            ...orderReq,
+            id: 1
           },
           jwt: 'eyJpYXQiOjE3MzMyNjI4MDd9.eyJvcmRlciI6eyJpdGVtcyI6W3sibWVudUlkIjoxLCJkZXNjcmlwdGlvbiI6IlZlZ2dpZSIsInByaWNlIjowLjAwMzh9XSwic3RvcmVJZCI6IjEiLCJmcmFuY2hpc2VJZCI6MSwiaWQiOjF9fQ.signature'
         }
       });
     }
-  
+
     if (method === 'GET') {
       return route.fulfill({
         json: {
@@ -142,7 +199,7 @@ async function setupMocks(page: Page) {
   /* FRANCHISE DETAILS */
   await page.route('**/api/franchise/*', route => {
     const method = route.request().method();
-    
+
     if (method === 'GET') {
       return route.fulfill({
         json: {
@@ -156,7 +213,7 @@ async function setupMocks(page: Page) {
         }
       });
     }
-    
+
     if (method === 'POST') {
       const body = route.request().postDataJSON();
       return route.fulfill({
@@ -168,7 +225,7 @@ async function setupMocks(page: Page) {
         }
       });
     }
-    
+
     if (method === 'DELETE') {
       return route.fulfill({ json: { message: 'franchise closed' } });
     }
@@ -338,13 +395,13 @@ test('admin can view close franchise dialog', async ({ page }) => {
   await page.getByRole('button', { name: 'Login' }).click();
 
   await page.getByRole('link', { name: 'Admin' }).click();
-  
+
   // Wait for page to load
   await page.waitForTimeout(500);
-  
+
   // Try finding the close button - it might be text content, not a role
   const closeButton = page.locator('button').filter({ hasText: 'close' }).or(page.locator('button').filter({ hasText: 'Close' })).first();
-  
+
   if (await closeButton.isVisible().catch(() => false)) {
     await closeButton.click();
     await expect(page.getByText('Sorry to see you go')).toBeVisible();
@@ -359,7 +416,7 @@ test('franchisee can view create store dialog', async ({ page }) => {
   await page.getByRole('button', { name: 'Login' }).click();
 
   await page.getByLabel('Global').getByRole('link', { name: 'Franchise' }).click();
-  
+
   const createButton = page.getByRole('button', { name: 'Create store' });
   if (await createButton.isVisible().catch(() => false)) {
     await createButton.click();
@@ -375,7 +432,7 @@ test('franchisee can view close store dialog', async ({ page }) => {
   await page.getByRole('button', { name: 'Login' }).click();
 
   await page.getByLabel('Global').getByRole('link', { name: 'Franchise' }).click();
-  
+
   const closeButton = page.getByRole('button', { name: 'Close' }).first();
   if (await closeButton.isVisible().catch(() => false)) {
     await closeButton.click();
@@ -402,7 +459,7 @@ test('view docs page', async ({ page }) => {
 test('navigate through docs', async ({ page }) => {
   await page.getByRole('contentinfo').getByRole('link', { name: 'About' }).click();
   await expect(page.getByText('The secret sauce')).toBeVisible();
-  
+
   await page.getByRole('link', { name: 'home' }).click();
   await expect(page.getByText('The web\'s best pizza').first()).toBeVisible();
 });
@@ -417,10 +474,10 @@ test('cancel payment', async ({ page }) => {
   await page.getByRole('combobox').selectOption({ index: 1 });
   await page.locator('button').filter({ hasText: 'Veggie' }).click();
   await page.getByRole('button', { name: 'Checkout' }).click();
-  
+
   // Wait for payment page
   //await expect(page.getByText('Send me that pizza right now!')).toBeVisible();
-  
+
   //await page.getByRole('button', { name: 'Cancel' }).click();
   //await expect(page.getByRole('combobox')).toBeVisible();
 });
@@ -442,10 +499,10 @@ test('admin create franchise', async ({ page }) => {
   // Fill in franchise details
   await page.getByPlaceholder('franchise name').fill('Test Franchise');
   await page.getByPlaceholder('franchisee admin email').fill('test@franchise.com');
-  
+
   // Click Create button
   await page.getByRole('button', { name: 'Create' }).click();
-  
+
   await page.waitForTimeout(500);
   await expect(page.locator('body')).toBeVisible();
 });
