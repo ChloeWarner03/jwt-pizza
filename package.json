@@ -10,8 +10,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "test": "playwright test",
-    //"test:coverage": "nyc --reporter=json-summary --reporter=text playwright test"
-    "test:coverage": "playwright test --coverage"
+    "test:coverage": "nyc --reporter=json-summary --reporter=text playwright test"
+
   },
   "devDependencies": {
     "@playwright/test": "^1.58.1",
