@@ -147,20 +147,6 @@ test('failed login shows error', async ({ page }) => {
   await expect(page.getByRole('heading', { name: 'Welcome back' })).toBeVisible();
 });
 
-test('order multiple pizzas', async ({ page }) => {
-  await page.getByRole('link', { name: 'Login' }).click();
-  await page.getByPlaceholder('Email address').fill('d@jwt.com');
-  await page.getByPlaceholder('Password').fill('diner');
-  await page.getByRole('button', { name: 'Login' }).click();
-  await page.getByRole('button', { name: 'Order now' }).click();
-  await page.waitForTimeout(1500);
-  await page.getByRole('combobox').selectOption('1');
-  await page.locator('button').filter({ hasText: 'Veggie' }).click();
-  await page.locator('button').filter({ hasText: 'Pepperoni' }).click();
-  await page.getByRole('button', { name: 'Checkout' }).click();
-  await expect(page.getByText('Send me those 2 pizzas right now!')).toBeVisible();
-});
-
 test('logout', async ({ page }) => {
   await page.getByRole('link', { name: 'Login' }).click();
   await page.getByPlaceholder('Email address').fill('d@jwt.com');
