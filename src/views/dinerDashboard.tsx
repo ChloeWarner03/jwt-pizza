@@ -3,6 +3,9 @@ import { Link } from 'react-router-dom';
 import View from './view';
 import { pizzaService } from '../service/service';
 import { Order, OrderHistory, Role, User } from '../service/pizzaService';
+import { CloseIcon } from '../icons';
+import { HSOverlay } from 'preline';
+import Button from '../components/button';
 
 interface Props {
   user: User | null;
@@ -25,8 +28,16 @@ export default function DinerDashboard(props: Props) {
     if (role.role === Role.Franchisee) {
       return `Franchisee on ${role.objectId}`;
     }
-
     return role.role;
+  }
+
+  async function updateUser() {
+    // TODO: Add your actual update logic here
+    // await pizzaService.updateUser(updatedData);
+    
+    setTimeout(() => {
+      HSOverlay.close(document.getElementById('hs-jwt-modal')!);
+    }, 100);
   }
 
   return (
@@ -50,6 +61,12 @@ export default function DinerDashboard(props: Props) {
           </div>
         </div>
 
+        <Button 
+          title="Edit" 
+          className="w-16 p-0" 
+          onPress={() => HSOverlay.open(document.getElementById('hs-jwt-modal')!)} 
+        />
+
         {orders?.length === 0 && (
           <div className="text-neutral-100">
             How have you lived this long without having a pizza?{' '}
@@ -70,15 +87,9 @@ export default function DinerDashboard(props: Props) {
                       <table className="min-w-full divide-y divide-gray-200">
                         <thead className="uppercase text-neutral-100 bg-slate-400 border-b-2 border-gray-500">
                           <tr>
-                            <th scope="col" className="px-6 py-3 text-start text-xs sm:text-sm font-medium">
-                              ID
-                            </th>
-                            <th scope="col" className="px-6 py-3 text-start text-xs sm:text-sm font-medium">
-                              Price
-                            </th>
-                            <th scope="col" className="px-6 py-3 text-start text-xs sm:text-sm font-medium">
-                              Date
-                            </th>
+                            <th scope="col" className="px-6 py-3 text-start text-xs sm:text-sm font-medium">ID</th>
+                            <th scope="col" className="px-6 py-3 text-start text-xs sm:text-sm font-medium">Price</th>
+                            <th scope="col" className="px-6 py-3 text-start text-xs sm:text-sm font-medium">Date</th>
                           </tr>
                         </thead>
                         <tbody className="divide-y divide-gray-200">
@@ -98,6 +109,28 @@ export default function DinerDashboard(props: Props) {
             </div>
           </>
         )}
+      </div>
+
+      {/* Modal Dialog - NOW INSIDE THE RETURN */}
+      <div role="dialog" aria-modal="true" aria-labelledby="dialog-title" id="hs-jwt-modal" className="hs-overlay hidden size-full fixed top-10 start-0 z-[80] overflow-x-hidden overflow-y-auto pointer-events-none">
+        <div className="hs-overlay-open:mt-7 hs-overlay-open:opacity-100 hs-overlay-open:duration-500 mt-0 opacity-0 ease-out transition-all sm:max-w-lg sm:w-full m-3 sm:mx-auto min-h-[calc(100%-3.5rem)]">
+          <div className="w-full flex flex-col bg-white border shadow-sm rounded-xl pointer-events-auto">
+            <div className="flex justify-between items-center py-3 px-4 border-b bg-slate-200 rounded-t-xl">
+              <h3 className="font-bold text-gray-800">Edit user</h3>
+              <button type="button" className="flex justify-center items-center size-7 text-sm font-semibold rounded-full border border-transparent text-gray-800 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none" data-hs-overlay="#hs-jwt-modal">
+                <CloseIcon className="" />
+              </button>
+            </div>
+            <div className="p-4 overflow-y-scroll max-h-52">
+              <div className="my-4 text-lg text-start grid grid-cols-5 gap-2 items-center">update fields here</div>
+            </div>
+            <div className="flex justify-end items-center gap-x-2 py-3 px-4 border-t bg-slate-200 rounded-b-xl">
+              <button type="button" className="py-2 px-3 inline-flex items-center gap-x-2 text-sm font-medium rounded-lg border border-gray-200 bg-white text-gray-800 shadow-sm hover:bg-gray-50 disabled:opacity-50 disabled:pointer-events-none" onClick={updateUser}>
+                Update
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </View>
   );
