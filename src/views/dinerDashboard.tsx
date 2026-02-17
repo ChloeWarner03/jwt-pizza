@@ -9,11 +9,23 @@ import Button from '../components/button';
 
 interface Props {
   user: User | null;
+  setUser: (user: User) => void;
 }
 
 export default function DinerDashboard(props: Props) {
   const user = props.user || ({} as User);
   const [orders, setOrders] = React.useState<Order[]>([]);
+
+  //I added these for the update user functionality. 
+  // They are refs to the input fields in the modal dialog 
+  // where the user can edit their information. 
+  // When the "Update" button is clicked, the updateUser 
+  // function will read the values from these refs and send 
+  // them to the server using the updateUser method in the 
+  // HttpPizzaService class.
+  const nameRef = React.useRef<HTMLInputElement>(null);
+  const emailRef = React.useRef<HTMLInputElement>(null);
+  const passwordRef = React.useRef<HTMLInputElement>(null);
 
   React.useEffect(() => {
     (async () => {
