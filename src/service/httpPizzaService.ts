@@ -46,6 +46,12 @@ class HttpPizzaService implements PizzaService {
     localStorage.setItem('token', token);
     return Promise.resolve(user);
   }
+//I added this method to the HttpPizzaService class to handle user updates, which is called in the DinerDashboard component when the user clicks the "Update" button after editing their information. The method sends a PUT request to the server with the updated user data and updates the token in localStorage if the update is successful.
+  async updateUser(updatedUser: User): Promise<User> {
+  const { user, token } = await this.callEndpoint(`/api/user/${updatedUser.id}`, 'PUT', updatedUser);
+  localStorage.setItem('token', token);
+  return Promise.resolve(user);
+}
 
   async register(name: string, email: string, password: string): Promise<User> {
     const { user, token } = await this.callEndpoint('/api/auth', 'POST', { name, email, password });
