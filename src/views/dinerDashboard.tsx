@@ -44,9 +44,17 @@ export default function DinerDashboard(props: Props) {
   }
 
   async function updateUser() {
-    // TODO: Add your actual update logic here
-    // await pizzaService.updateUser(updatedData);
-    
+    const updatedUser: User = {
+      id: user.id,
+      name: nameRef.current?.value,
+      email: emailRef.current?.value,
+      password: passwordRef.current?.value || undefined,
+      roles: user.roles,
+    };
+
+    await pizzaService.updateUser(updatedUser);
+    props.setUser(updatedUser);
+
     setTimeout(() => {
       HSOverlay.close(document.getElementById('hs-jwt-modal')!);
     }, 100);
@@ -73,10 +81,10 @@ export default function DinerDashboard(props: Props) {
           </div>
         </div>
 
-        <Button 
-          title="Edit" 
-          className="w-16 p-0" 
-          onPress={() => HSOverlay.open(document.getElementById('hs-jwt-modal')!)} 
+        <Button
+          title="Edit"
+          className="w-16 p-0"
+          onPress={() => HSOverlay.open(document.getElementById('hs-jwt-modal')!)}
         />
 
         {orders?.length === 0 && (
@@ -134,6 +142,15 @@ export default function DinerDashboard(props: Props) {
               </button>
             </div>
             <div className="p-4 overflow-y-scroll max-h-52">
+              <div className="my-4 text-lg text-start grid grid-cols-5 gap-2 items-center">
+                <div className="font-semibold">name:</div>
+                <input type="text" className="col-span-4 border border-gray-300 rounded-md p-1" defaultValue={user.name} ref={nameRef} />
+                <div className="font-semibold">email:</div>
+                <input type="email" className="col-span-4 border border-gray-300 rounded-md p-1" defaultValue={user.email} ref={emailRef} />
+                <div className="font-semibold">password:</div>
+                <input type="text" className="col-span-4 border border-gray-300 rounded-md p-1" defaultValue="" ref={passwordRef} />
+              </div>
+            </div><div className="p-4 overflow-y-scroll max-h-52">
               <div className="my-4 text-lg text-start grid grid-cols-5 gap-2 items-center">update fields here</div>
             </div>
             <div className="flex justify-end items-center gap-x-2 py-3 px-4 border-t bg-slate-200 rounded-b-xl">
