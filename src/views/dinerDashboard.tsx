@@ -81,12 +81,6 @@ export default function DinerDashboard(props: Props) {
           </div>
         </div>
 
-        <Button
-          title="Edit"
-          className="w-16 p-0"
-          onPress={() => HSOverlay.open(document.getElementById('hs-jwt-modal')!)}
-        />
-
         {orders?.length === 0 && (
           <div className="text-neutral-100">
             How have you lived this long without having a pizza?{' '}
