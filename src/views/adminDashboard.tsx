@@ -63,10 +63,11 @@ export default function AdminDashboard(props: Props) {
   }
   //I added this function to handle user deletion
   async function deleteUser(userId: string) {
+    console.log('deleting user id:', userId);
     await pizzaService.deleteUser(userId);
     setUserList(prev => ({
       ...prev,
-      users: prev.users.filter(u => u.id !== userId)
+      users: prev.users.filter(u => String(u.id) !== String(userId))
     }));
   }
 
@@ -180,9 +181,7 @@ export default function AdminDashboard(props: Props) {
                             <td className="px-6 py-2 whitespace-nowrap text-sm text-gray-800">
                               {u.roles?.map(r => r.role).join(', ')}
                             </td>
-                            <td className="px-6 py-2 whitespace-nowrap text-sm text-gray-800">
-                              <button onClick={() => deleteUser(u.id!)} className="text-red-500 hover:text-red-800 font-bold">✕</button>
-                            </td>
+                            <button onClick={() => deleteUser(String(u.id!))} className="text-red-500 hover:text-red-800 font-bold">✕</button>
                           </tr>
                         ))}
                       </tbody>
