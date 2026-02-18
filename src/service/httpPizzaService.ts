@@ -51,7 +51,12 @@ class HttpPizzaService implements PizzaService {
   const { user, token } = await this.callEndpoint(`/api/user/${updatedUser.id}`, 'PUT', updatedUser);
   localStorage.setItem('token', token);
   return Promise.resolve(user);
-}
+  }
+
+  //I added this method to fetch a list of users, which can be used in the admin dashboard to manage users. It sends a GET request to the server with pagination and filtering parameters and returns a list of users along with a flag indicating if there are more users to fetch.
+  async getUsers(page: number = 1, limit: number = 10, nameFilter: string = '*'): Promise<{ users: User[]; more: boolean }> {
+  return this.callEndpoint(`/api/user?page=${page}&limit=${limit}&name=${nameFilter}`);
+  }
 
   async register(name: string, email: string, password: string): Promise<User> {
     const { user, token } = await this.callEndpoint('/api/auth', 'POST', { name, email, password });
