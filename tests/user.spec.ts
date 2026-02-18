@@ -71,3 +71,46 @@ test('updateUser', async ({ page }) => {
   await page.waitForSelector('[role="dialog"].hidden', { state: 'attached' });
   await expect(page.getByRole('main')).toContainText('pizza dinerx');
 });
+
+test('admin list users', async ({ page }) => {
+  await page.route('**/api/auth', route => {
+    const method = route.request().method();
+    if (method === 'PUT') {
+      return route.fulfill({
+        json: { user: { id: 1, name: 'Admin', email: 'a@jwt.com', roles: [{ role: 'admin' }] }, token: 'admin-token' }
+      });
+    }
+  });
+
+  await page.route('**/api/franchise**', route =>
+    route.fulfill({ json: { franchises: [], more: false } })
+  );
+
+  await page.route('**/api/user?**', route =>
+    route.fulfill({
+      json: {
+        users: [
+          { id: 1, name: 'Joe', email: 'j@jwt.com', roles: [{ role: 'admin' }] },
+          { id: 2, name: 'Betty', email: 'b@jwt.com', roles: [{ role: 'diner' }] },
+        ],
+        more: false
+      }
+    })
+  );
+
+  await page.goto('/');
+  await page.getByRole('link', { name: 'Login' }).click();
+  await page.getByPlaceholder('Email address').fill('a@jwt.com');
+  await page.getByPlaceholder('Password').fill('admin');
+  await page.getByRole('button', { name: 'Login' }).click();
+  await page.getByRole('link', { name: 'Admin' }).click();
+
+  await expect(page.getByText('Users')).toBeVisible();
+  await expect(page.getByText('Joe')).toBeVisible();
+  await expect(page.getByText('Betty')).toBeVisible();
+
+  // Test search
+  await page.getByPlaceholder('Name').fill('Joe');
+  await page.getByRole('button', { name: 'Search' }).click();
+  await expect(page.locator('body')).toBeVisible();
+});
