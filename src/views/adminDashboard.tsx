@@ -62,7 +62,7 @@ export default function AdminDashboard(props: Props) {
     setUserPage(1);
   }
 
-  let response = <NotFound />; f
+  let response = <NotFound />; 
   if (Role.isRole(props.user, Role.Admin)) {
     response = (
       <View title="Mama Ricci's kitchen">
