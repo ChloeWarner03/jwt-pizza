@@ -17,11 +17,26 @@ export default function AdminDashboard(props: Props) {
   const [franchisePage, setFranchisePage] = React.useState(0);
   const filterFranchiseRef = React.useRef<HTMLInputElement>(null);
 
+  //Components that I added for the get user
+  const [userList, setUserList] = React.useState<{ users: User[]; more: boolean }>({ users: [], more: false });
+  const [userPage, setUserPage] = React.useState(1);
+  const filterUserRef = React.useRef<HTMLInputElement>(null);
+
   React.useEffect(() => {
     (async () => {
       setFranchiseList(await pizzaService.getFranchises(franchisePage, 3, '*'));
     })();
   }, [props.user, franchisePage]);
+
+  //I added this useEffect for the get user functionality
+  React.useEffect(() => {
+    (async () => {
+      if (Role.isRole(props.user, Role.Admin)) {
+        const result = await pizzaService.getUsers(userPage, 10, '*');
+        setUserList(result);
+      }
+    })();
+  }, [props.user, userPage]);
 
   function createFranchise() {
     navigate('/admin-dashboard/create-franchise');
@@ -37,6 +52,14 @@ export default function AdminDashboard(props: Props) {
 
   async function filterFranchises() {
     setFranchiseList(await pizzaService.getFranchises(franchisePage, 10, `*${filterFranchiseRef.current?.value}*`));
+  }
+
+  //I added this one for searching the users
+  async function searchUsers() {
+    const name = filterUserRef.current?.value || '*';
+    const result = await pizzaService.getUsers(1, 10, `${name}*`);
+    setUserList(result);
+    setUserPage(1);
   }
 
   let response = <NotFound />;
