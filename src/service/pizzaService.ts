@@ -112,6 +112,7 @@ interface PizzaService {
   docs(docType: string): Promise<Endpoints>;
   updateUser(user: User): Promise<User>;
   getUsers(page: number, limit: number, nameFilter: string): Promise<{ users: User[]; more: boolean }>;
+  deleteUser(userId: string): Promise<void>;
 }
 
 export { Role, PizzaService, User, Menu, Pizza, OrderHistory, Order, Franchise, FranchiseList, Store, OrderItem, Endpoint, Endpoints, OrderResponse, JWTPayload };

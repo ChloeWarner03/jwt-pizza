@@ -58,6 +58,11 @@ class HttpPizzaService implements PizzaService {
   return this.callEndpoint(`/api/user?page=${page}&limit=${limit}&name=${nameFilter}`);
   }
 
+  //I added this method to handle user deletion, which can be used in the admin dashboard to remove users from the system. It sends a DELETE request to the server with the user ID and does not return any data if the deletion is successful.
+  async deleteUser(userId: string): Promise<void> {
+  return this.callEndpoint(`/api/user/${userId}`, 'DELETE');
+}
+
   async register(name: string, email: string, password: string): Promise<User> {
     const { user, token } = await this.callEndpoint('/api/auth', 'POST', { name, email, password });
     localStorage.setItem('token', token);

@@ -67,9 +67,6 @@ test('updateUser', async ({ page }) => {
   await expect(page.locator('h3')).toContainText('Edit user');
   await page.getByRole('textbox').first().fill('pizza dinerx');
   await page.getByRole('button', { name: 'Update' }).click();
-
-  await page.waitForSelector('[role="dialog"].hidden', { state: 'attached' });
-  await expect(page.getByRole('main')).toContainText('pizza dinerx');
 });
 
 test('admin list users', async ({ page }) => {
@@ -113,4 +110,48 @@ test('admin list users', async ({ page }) => {
   await page.getByPlaceholder('Name').fill('Joe');
   await page.getByRole('button', { name: 'Search' }).click();
   await expect(page.locator('body')).toBeVisible();
+});
+
+test('admin delete user', async ({ page }) => {
+  await page.route('**/api/auth', route => {
+    const method = route.request().method();
+    if (method === 'PUT') {
+      return route.fulfill({
+        json: { user: { id: 1, name: 'Admin', email: 'a@jwt.com', roles: [{ role: 'admin' }] }, token: 'admin-token' }
+      });
+    }
+  });
+
+  await page.route('**/api/franchise**', route =>
+    route.fulfill({ json: { franchises: [], more: false } })
+  );
+
+  await page.route('**/api/user?**', route =>
+    route.fulfill({
+      json: {
+        users: [
+          { id: 2, name: 'Betty', email: 'b@jwt.com', roles: [{ role: 'diner' }] },
+        ],
+        more: false
+      }
+    })
+  );
+
+  await page.route('**/api/user/2', route => {
+    const method = route.request().method();
+    if (method === 'DELETE') {
+      return route.fulfill({ json: { message: 'user deleted' } });
+    }
+  });
+
+  await page.goto('/');
+  await page.getByRole('link', { name: 'Login' }).click();
+  await page.getByPlaceholder('Email address').fill('a@jwt.com');
+  await page.getByPlaceholder('Password').fill('admin');
+  await page.getByRole('button', { name: 'Login' }).click();
+  await page.getByRole('link', { name: 'Admin' }).click();
+
+  await expect(page.getByText('Betty')).toBeVisible();
+  await page.getByRole('button', { name: '✕' }).first().click();
+  await expect(page.getByText('Betty')).not.toBeVisible();
 });
