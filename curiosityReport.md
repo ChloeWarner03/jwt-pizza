@@ -40,8 +40,51 @@ no polling, no waiting, no extra code to wire services together.
 It also scales automatically. Whether one event fires or a million, 
 EventBridge handles it without you doing anything differently.
 
+## Cool Facts
 
+## Challenges
 
+## Connection to the Course
+
+## My Experiment
+
+To actually understand EventBridge I built a small experiment I 
+called the **Game Event Logger**. The idea was to simulate a game 
+where uploading a file to S3 represents a player action, and 
+EventBridge routes that event to a Lambda function that responds 
+like a game announcer.
+
+**The architecture:**
+S3 (file upload) → EventBridge (rule) → Lambda (game announcer)
+
+**Setup steps:**
+1. Created a Lambda function (`eventbridge-test`) in Python 3.12
+2. Created an S3 bucket with EventBridge notifications enabled
+3. Created an EventBridge rule (`game-event-rule`) listening for 
+   `Object Created` events from S3, targeting the Lambda function
+4. Uploaded files named things like `player1_killed_dragon.txt` 
+   to trigger the rule
+
+**The Lambda code read the filename and responded accordingly:**
+- `dragon` → "A dragon has been slain! +500 XP. ACHIEVEMENT 
+  UNLOCKED: Dragon Slayer 🐉"
+- `treasure` → "Treasure found! +200 Gold awarded!"
+- `boss` → "BOSS BATTLE INITIATED! Prepare for combat!"
+
+**Results:**
+
+When I uploaded `player1_killed_dragon2.txt`, the Lambda fired 
+in under 2ms and printed the full announcer sequence in CloudWatch 
+logs. Seeing it actually work was really satisfying — especially 
+after troubleshooting the filename issues to get it right.
+
+![CloudWatch logs showing the dragon slayer output](logskilldragon.png)
+![EventBridge rule configuration](eventbridgerules.png)
+![S3 bucket with uploaded file](bucket.png)
+
+## What I Think
+
+## Conclusion
 
 
 
@@ -59,6 +102,12 @@ Definition:
     - enable interaction between services
 
 Amazon EventBridge is a serverless event bus that helps you build event-driven applications by connecting application components using data from a variety of sources. It routes the data to targets. It is a simple and consistant way to ingest, filter, transform and deliver events in real time wihout making it so then you need to manage underlying infrasturcture. 
+
+
+
+
+
+
 
 can inlcude :
 
