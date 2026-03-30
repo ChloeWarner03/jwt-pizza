@@ -1,7 +1,14 @@
 # Curiosity Report: Amazon EventBridge
 
-## Why I was curious about Amazon EventBridge:
-**The reason that I chose my topic is because my father is a software developer for the National Park Service and when I was visiting him there was a presentation that I got to listen to from a representative of AWS. There were a few things he talked about but they spent a long time talking about Amazon EventBridge. This peaked my curioity and I wanted to learn more about it and how it works.
+## Why I Was Curious About Amazon EventBridge
+
+My dad, Daniel Warner, is a software developer for the National Park 
+Service. When I was visiting him, I got to sit in on a presentation 
+from an AWS representative. They spent a lot of time talking about 
+Amazon EventBridge. I didn't really understand what it was, why it 
+was needed, or what its purpose was — and that stuck with me. I 
+wanted to actually figure out how it worked, so I decided to make 
+it my curiosity report topic.
 
 ## Topic Overview (what is it and how it works)
 
