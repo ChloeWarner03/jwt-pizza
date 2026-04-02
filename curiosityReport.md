@@ -71,6 +71,8 @@ When I uploaded player1_killed_dragon2.txt, the Lambda fired in under 2ms and pr
 
 ## What I Think
 
+When I was first trying to understadn the concept it sounded really complicated and like it would take a lot of different things to get it working but once I started diving deeper and experimenting the concepts finally started to click and I was able to understand what I needed to do. I understand why the AWS representative was spending so much time on it. It is really useful for cloud applications to talk to one another. 
+
 ## Conclusion
 
 
