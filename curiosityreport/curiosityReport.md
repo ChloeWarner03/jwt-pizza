@@ -75,12 +75,7 @@ When I was first trying to understadn the concept it sounded really complicated 
 
 ## Conclusion
 
-
-
-
-
+Going into this I basically had no idea what Eventbridge was, only a general idea. I had no idea why it existed or even how it worked. After researching and expeimenting with the game event logger I now have an understanding of the core idea of Eventbridge. It lets events flow between services automatically. It is a pretty clean and scalable way to connect cloud infrastures togather rather than manually connecting them together. It is something I find useful now and will continue to explore and most likely use in the future.
 
 
 ## Example Use Case
-
-## Conclusion/Final Thoughts
