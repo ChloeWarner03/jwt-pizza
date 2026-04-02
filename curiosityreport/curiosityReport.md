@@ -81,38 +81,6 @@ When I was first trying to understadn the concept it sounded really complicated 
 
 
 
-
-
-
-
-## Topic Overview (what is it and how it works)
-
-Definition:
-- Event: a thing that happens, paritucaly on of importance
-    - Event-driven architectures drive reliability and scalability
-    - enable interaction between services
-
-Amazon EventBridge is a serverless event bus that helps you build event-driven applications by connecting application components using data from a variety of sources. It routes the data to targets. It is a simple and consistant way to ingest, filter, transform and deliver events in real time wihout making it so then you need to manage underlying infrasturcture. 
-
-
-
-
-
-
-
-can inlcude :
-
-## Why its great
-## Challenges
-## Tools
-## Connection to our Course
-## Cool Facts
-## What I think
-
-## My Experiment
-
-## Diagram
-
 ## Example Use Case
 
 ## Conclusion/Final Thoughts
