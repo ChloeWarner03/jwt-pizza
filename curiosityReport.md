@@ -6,20 +6,21 @@ My dad, Daniel Warner, is a software developer for the National Park
 Service. When I was visiting him, I got to sit in on a presentation 
 from an AWS representative. They spent a lot of time talking about 
 Amazon EventBridge. I didn't really understand what it was, why it 
-was needed, or what its purpose was — and that stuck with me. I 
+was needed, or what its purpose was and I wanted to learn more. I 
 wanted to actually figure out how it worked, so I decided to make 
 it my curiosity report topic.
 
 ## What Is Amazon EventBridge?
 
 Amazon EventBridge is a serverless event bus. That means it listens 
-for things that happen — called events — and automatically routes 
-them to other services without you having to manually trigger 
-anything or manage any servers.
+for things that happen which are called events and then it will automatically route 
+them to other services, making it so then you do not have the manually trigger it. 
+This allows for there to be more automatic processes and you do not need to
+manage the servers as much.
 
-An event is just something that occurs, like a file being uploaded, 
-a database being updated, or a user clicking a button. EventBridge 
-sits in the middle and says "when THIS happens, do THAT."
+I learned that an event is just something that occur. For example, a file being uploaded, 
+a database being updated, or even just a user clocking buttons. Eventbridge is the middleman, 
+it directs where things go and basically says when THIS happens, do THAT. 
 
 The core components are:
 - **Event Bus: the pipeline that receives and routes events**
