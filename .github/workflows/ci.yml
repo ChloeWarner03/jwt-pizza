@@ -38,8 +38,6 @@ jobs:
           printf '{"version": "%s" }' "$version" > public/version.json
 
       - name: Build
-        env:
-          VITE_PIZZA_SERVICE_URL: ${{ secrets.SERVICE_URL }}
         run: npm run build
 
       - name: Update dist artifact
