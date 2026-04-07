@@ -11,10 +11,9 @@ interface Props {
 }
 
 export default function Register(props: Props) {
-  const [name, setName] = React.useState('Admin');
-  const [password, setPassword] = React.useState('admin');
-  const [email, setEmail] = React.useState('a@jwt.com');
-  const [role, setRole] = React.useState('admin');
+  const [name, setName] = React.useState('');
+  const [password, setPassword] = React.useState('');
+  const [email, setEmail] = React.useState('');
   const [message, setMessage] = React.useState('');
 
   const navigateToParentPath = useBreadcrumb();
@@ -28,7 +27,7 @@ export default function Register(props: Props) {
   async function register(event: React.FormEvent) {
     event.preventDefault();
     try {
-      props.setUser(await pizzaService.register(name, email, password, role));
+      props.setUser(await pizzaService.register(name, email, password));
       navigateToParentPath();
     } catch (error) {
       displayMessage(JSON.stringify(error));
@@ -105,21 +104,6 @@ export default function Register(props: Props) {
                   <KeyIcon />
                 </div>
               </div>
-            </div>
-            <div>
-              <label htmlFor="role" className="sr-only">
-                Role
-              </label>
-              <select
-                id="role"
-                value={role}
-                onChange={(e) => setRole(e.target.value)}
-                className="py-3 ps-4 pe-4 block w-full bg-white/10 border-white/20 text-white placeholder:text-white rounded-lg text-sm focus:border-white/30 focus:ring-white/30 sm:p-4"
-              >
-                <option value="diner">Diner</option>
-                <option value="franchisee">Franchisee</option>
-                <option value="admin">Admin</option>
-              </select>
             </div>
 
             <div className="flex flex-row mt-8">
