@@ -35,3 +35,8 @@
 | Description | Used Burp Sequencer to analyze the randomness of JWT auth tokens across 102 captured login responses. Effective entropy was ~28 bits at 0.001% significance level. Tokens are sufficiently random and cannot be predicted or forged. No exploitable pattern found. Attack was visible in Grafana as an authentication attempt spike. |
 | Images | ![Sequencer results](image-1.png) ![Grafana spike](image-2.png) |
 | Corrections | Added IP-based rate limiting to the login endpoint using express-rate-limit (max 50 requests per 15 minutes) to prevent high-volume token capture attacks. |
+
+
+#SQL test
+
+![alt text](image-3.png)
