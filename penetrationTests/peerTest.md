@@ -48,5 +48,15 @@
 | Images | ![Stack trace exposure](image-3.png) |
 | Corrections | Modified error handler in service.js to strip stack traces from production error responses. Stack traces are still logged internally but no longer returned to the client. |
 
+## Attack 5 - Broken Access Control (Franchise Deletion)
 
+| Item | Result |
+|------|--------|
+| Date | April 8, 2026 |
+| Target | https://pizza-service.devops-cwarner.click |
+| Classification | OWASP A01 - Broken Access Control |
+| Severity | 3 - High |
+| Description | A regular diner account was able to successfully delete a franchise by sending a DELETE request to `/api/franchise/1`. The endpoint returned 200 with "franchise deleted" confirming the deletion succeeded. No admin role was required — any authenticated user can delete franchises. |
+| Images | ![Franchise deletion](image-4.png) |
+| Corrections | Add role check to the franchise delete endpoint to verify the user has admin privileges before allowing deletion. |
 ![alt text](image-4.png)
