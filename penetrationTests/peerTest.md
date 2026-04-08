@@ -10,7 +10,7 @@
 | Severity | 2 - Medium |
 | Description | Brute force password attack against login endpoint. Tested 7 common passwords. The correct password "admin" was identified as a weak, guessable credential. |
 | Images | ![test1](test1.png) |
-| Corrections | Implemented account lockout after 3 failed attempts. Weak default password identified. |
+| Corrections | Implemented account lockout after 3 failed attempts. Weak default password identified. | t
 
 ## Attack 2 - JWT Tampering
 
