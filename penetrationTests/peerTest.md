@@ -10,7 +10,7 @@
 | Severity | 2 - Medium |
 | Description | Brute force password attack against login endpoint. Tested 7 common passwords. The correct password "admin" was identified as a weak, guessable credential. |
 | Images | ![test1](test1.png) |
-| Corrections | Implemented account lockout after 3 failed attempts. Weak default password identified. | t
+| Corrections | Implemented account lockout after 3 failed attempts. Weak default password identified. |
 
 ## Attack 2 - JWT Tampering
 
@@ -36,7 +36,14 @@
 | Images | ![Sequencer results](image-1.png) ![Grafana spike](image-2.png) |
 | Corrections | Added IP-based rate limiting to the login endpoint using express-rate-limit (max 50 requests per 15 minutes) to prevent high-volume token capture attacks. |
 
+## Attack 4 - SQL Injection / Stack Trace Exposure
 
-#SQL test
-
-![alt text](image-3.png)
+| Item | Result |
+|------|--------|
+| Date | April 8, 2026 |
+| Target | https://pizza-service.devops-cwarner.click/api/auth |
+| Classification | OWASP A05 - Security Misconfiguration |
+| Severity | 1 - Low |
+| Description | Attempted SQL injection via login endpoint email field using payload `' OR '1'='1`. Injection failed — database queries are parameterized and not vulnerable. However the error response exposed a full stack trace including internal file paths and line numbers (`/usr/src/app/database/database.js:71:15`), leaking server implementation details to the client. |
+| Images | ![Stack trace exposure](image-3.png) |
+| Corrections | Modified error handler in service.js to strip stack traces from production error responses. Stack traces are still logged internally but no longer returned to the client. |
