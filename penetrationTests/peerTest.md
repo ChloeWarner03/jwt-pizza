@@ -47,3 +47,6 @@
 | Description | Attempted SQL injection via login endpoint email field using payload `' OR '1'='1`. Injection failed — database queries are parameterized and not vulnerable. However the error response exposed a full stack trace including internal file paths and line numbers (`/usr/src/app/database/database.js:71:15`), leaking server implementation details to the client. |
 | Images | ![Stack trace exposure](image-3.png) |
 | Corrections | Modified error handler in service.js to strip stack traces from production error responses. Stack traces are still logged internally but no longer returned to the client. |
+
+
+![alt text](image-4.png)
